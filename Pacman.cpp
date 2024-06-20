@@ -6,15 +6,12 @@
 #include "Headers/Pacman.hpp"
 #include "Headers/MapCollision.hpp"
 
-Pacman::Pacman() :
-	animation_over(0),
-	dead(0),
-	direction(0),
-	energizer_timer(0),
-	position({0, 0})
+Pacman::Pacman() : animation_over(0),
+				   dead(0),
+				   direction(0),
+				   energizer_timer(0),
+				   position({0, 0})
 {
-	//I just realized that I already explained everything in the Ghost class.
-	//And I don't like to repeat myself.
 }
 
 bool Pacman::get_animation_over()
@@ -37,45 +34,34 @@ unsigned short Pacman::get_energizer_timer()
 	return energizer_timer;
 }
 
-void Pacman::draw(bool i_victory, sf::RenderWindow& i_window)
+void Pacman::draw(bool i_victory, sf::RenderWindow &i_window)
 {
 	unsigned char frame = static_cast<unsigned char>(floor(animation_timer / static_cast<float>(PACMAN_ANIMATION_SPEED)));
-
 	sf::Sprite sprite;
-
 	sf::Texture texture;
-
 	sprite.setPosition(position.x, position.y);
+
+	sf::CircleShape pacman_shape(CELL_SIZE / 2);
+	pacman_shape.setPosition(position.x, position.y);
 
 	if (1 == dead || 1 == i_victory)
 	{
 		if (animation_timer < PACMAN_DEATH_FRAMES * PACMAN_ANIMATION_SPEED)
 		{
 			animation_timer++;
-
-			texture.loadFromFile("Resources/Images/PacmanDeath" + std::to_string(CELL_SIZE) + ".png");
-
-			sprite.setTexture(texture);
-			sprite.setTextureRect(sf::IntRect(CELL_SIZE * frame, 0, CELL_SIZE, CELL_SIZE));
-
-			i_window.draw(sprite);
+			pacman_shape.setFillColor(sf::Color::White);
+			i_window.draw(pacman_shape);
 		}
 		else
 		{
-			//You can only die once.
 			animation_over = 1;
 		}
 	}
 	else
 	{
-		texture.loadFromFile("Resources/Images/Pacman" + std::to_string(CELL_SIZE) + ".png");
-
-		sprite.setTexture(texture);
-		sprite.setTextureRect(sf::IntRect(CELL_SIZE * frame, CELL_SIZE * direction, CELL_SIZE, CELL_SIZE));
-
-		i_window.draw(sprite);
-
 		animation_timer = (1 + animation_timer) % (PACMAN_ANIMATION_FRAMES * PACMAN_ANIMATION_SPEED);
+		pacman_shape.setFillColor(sf::Color::Yellow);
+		i_window.draw(pacman_shape);
 	}
 }
 
@@ -101,7 +87,6 @@ void Pacman::set_dead(bool i_dead)
 
 	if (1 == dead)
 	{
-		//Making sure that the animation starts from the beginning.
 		animation_timer = 0;
 	}
 }
@@ -111,7 +96,7 @@ void Pacman::set_position(short i_x, short i_y)
 	position = {i_x, i_y};
 }
 
-void Pacman::update(unsigned char i_level, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH>& i_map)
+void Pacman::update(unsigned char i_level, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> &i_map)
 {
 	std::array<bool, 4> walls{};
 	walls[0] = map_collision(0, 0, PACMAN_SPEED + position.x, position.y, i_map);
@@ -121,7 +106,7 @@ void Pacman::update(unsigned char i_level, std::array<std::array<Cell, MAP_HEIGH
 
 	if (1 == sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		if (0 == walls[0]) //You can't turn in this direction if there's a wall there.
+		if (0 == walls[0])
 		{
 			direction = 0;
 		}
@@ -155,28 +140,28 @@ void Pacman::update(unsigned char i_level, std::array<std::array<Cell, MAP_HEIGH
 	{
 		switch (direction)
 		{
-			case 0:
-			{
-				position.x += PACMAN_SPEED;
+		case 0:
+		{
+			position.x += PACMAN_SPEED;
 
-				break;
-			}
-			case 1:
-			{
-				position.y -= PACMAN_SPEED;
+			break;
+		}
+		case 1:
+		{
+			position.y -= PACMAN_SPEED;
 
-				break;
-			}
-			case 2:
-			{
-				position.x -= PACMAN_SPEED;
+			break;
+		}
+		case 2:
+		{
+			position.x -= PACMAN_SPEED;
 
-				break;
-			}
-			case 3:
-			{
-				position.y += PACMAN_SPEED;
-			}
+			break;
+		}
+		case 3:
+		{
+			position.y += PACMAN_SPEED;
+		}
 		}
 	}
 
@@ -189,9 +174,8 @@ void Pacman::update(unsigned char i_level, std::array<std::array<Cell, MAP_HEIGH
 		position.x = PACMAN_SPEED - CELL_SIZE;
 	}
 
-	if (1 == map_collision(1, 0, position.x, position.y, i_map)) //When Pacman eats an energizer...
+	if (1 == map_collision(1, 0, position.x, position.y, i_map))
 	{
-		//He becomes energized!
 		energizer_timer = static_cast<unsigned short>(ENERGIZER_DURATION / pow(2, i_level));
 	}
 	else
