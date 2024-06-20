@@ -9,15 +9,10 @@
 
 Ghost::Ghost(unsigned char i_id) : id(i_id)
 {
-	// I keep writing "gohst" instead of "gohst" (THERE! I did it again!).
-	// So in this file I'll write only "gohst".
-	// Enjoy!
 }
 
 bool Ghost::pacman_collision(const Position &i_pacman_position)
 {
-	// I used the ADVANCED collision checking algorithm.
-	// Only experts like me can understand this.
 	if (position.x > i_pacman_position.x - CELL_SIZE && position.x < CELL_SIZE + i_pacman_position.x)
 	{
 		if (position.y > i_pacman_position.y - CELL_SIZE && position.y < CELL_SIZE + i_pacman_position.y)
@@ -34,7 +29,6 @@ float Ghost::get_target_distance(unsigned char i_direction)
 	short x = position.x;
 	short y = position.y;
 
-	// We'll imaginarily move the gohst in a given direction and calculate the distance to the target.
 	switch (i_direction)
 	{
 	case 0:
@@ -61,9 +55,6 @@ float Ghost::get_target_distance(unsigned char i_direction)
 	}
 	}
 
-	// I used the Pythagoras' theorem.
-	// Because I know math.
-	// Are you impressed?
 	return static_cast<float>(sqrt(pow(x - target.x, 2) + pow(y - target.y, 2)));
 }
 
@@ -71,23 +62,9 @@ void Ghost::draw(bool i_flash, sf::RenderWindow &i_window)
 {
 	// Current frame of the animation.
 	unsigned char body_frame = static_cast<unsigned char>(floor(animation_timer / static_cast<float>(GHOST_ANIMATION_SPEED)));
+	sf::CircleShape ghost_shape(CELL_SIZE / 2);
+	ghost_shape.setPosition(position.x, position.y);
 
-	sf::Sprite body;
-	sf::Sprite face;
-
-	sf::Texture texture;
-	texture.loadFromFile("Resources/Images/Ghost" + std::to_string(CELL_SIZE) + ".png");
-
-	body.setTexture(texture);
-	body.setPosition(position.x, position.y);
-	// Animation is basically a quick display of similar images.
-	// So that's what we're doing here.
-	body.setTextureRect(sf::IntRect(CELL_SIZE * body_frame, 0, CELL_SIZE, CELL_SIZE));
-
-	face.setTexture(texture);
-	face.setPosition(position.x, position.y);
-
-	// The "I'm not frightened" look.
 	if (0 == frightened_mode)
 	{
 		switch (id)
@@ -95,73 +72,51 @@ void Ghost::draw(bool i_flash, sf::RenderWindow &i_window)
 		case 0:
 		{
 			// Red color
-			body.setColor(sf::Color(255, 0, 0));
-
+			ghost_shape.setFillColor(sf::Color(255, 0, 0));
 			break;
 		}
 		case 1:
 		{
 			// Pink color
-			body.setColor(sf::Color(255, 182, 255));
-
+			ghost_shape.setFillColor(sf::Color(255, 182, 255));
 			break;
 		}
 		case 2:
 		{
-			// Cyan color (I still don't understand why they called it blue)
-			body.setColor(sf::Color(0, 255, 255));
-
+			// Cyan color
+			ghost_shape.setFillColor(sf::Color(0, 255, 255));
 			break;
 		}
 		case 3:
 		{
 			// Orange color
-			body.setColor(sf::Color(255, 182, 85));
+			ghost_shape.setFillColor(sf::Color(255, 182, 85));
+			break;
 		}
 		}
-
-		face.setTextureRect(sf::IntRect(CELL_SIZE * direction, CELL_SIZE, CELL_SIZE, CELL_SIZE));
-
-		i_window.draw(body);
+		i_window.draw(ghost_shape);
 	}
-	// The "Maybe I am frightened" look.
 	else if (1 == frightened_mode)
 	{
-		body.setColor(sf::Color(36, 36, 255));
-		// The face remains the same regardless of where the gohst is going right now.
-		face.setTextureRect(sf::IntRect(4 * CELL_SIZE, CELL_SIZE, CELL_SIZE, CELL_SIZE));
-
+		ghost_shape.setFillColor(sf::Color(36, 36, 255));
 		if (1 == i_flash && 0 == body_frame % 2)
 		{
-			body.setColor(sf::Color(255, 255, 255));
-			face.setColor(sf::Color(255, 0, 0));
+			ghost_shape.setFillColor(sf::Color(255, 255, 255));
 		}
 		else
 		{
-			body.setColor(sf::Color(36, 36, 255));
-			face.setColor(sf::Color(255, 255, 255));
+			ghost_shape.setFillColor(sf::Color(36, 36, 255));
 		}
-
-		i_window.draw(body);
-	}
-	// The "AAAAH!!!! I'M OUTTA HERE!!!!" look.
-	else
-	{
-		// We only draw the face because Pacman stole the body.
-		face.setTextureRect(sf::IntRect(CELL_SIZE * direction, 2 * CELL_SIZE, CELL_SIZE, CELL_SIZE));
+		i_window.draw(ghost_shape);
 	}
 
-	i_window.draw(face);
-
-	//--------------------------------------<        This is to prevent overflowing.         >-
+	// This is to prevent overflowing
 	animation_timer = (1 + animation_timer) % (GHOST_ANIMATION_FRAMES * GHOST_ANIMATION_SPEED);
 }
 
 void Ghost::reset(const Position &i_home, const Position &i_home_exit)
 {
 	movement_mode = 0;
-	// Everyone can use the door except the red gohst.
-	// Because I hate the red gohst.
 	use_door = 0 < id;
 
 	direction = 0;
@@ -187,7 +142,6 @@ void Ghost::switch_mode()
 
 void Ghost::update(unsigned char i_level, std::array<std::array<Cell, MAP_HEIGHT>, MAP_WIDTH> &i_map, Ghost &i_ghost_0, Pacman &i_pacman)
 {
-	// Can the gohst move?
 	bool move = 0;
 
 	// If this is greater than 1, that means that the gohst has reached the intersection.
@@ -209,7 +163,6 @@ void Ghost::update(unsigned char i_level, std::array<std::array<Cell, MAP_HEIGHT
 		frightened_mode = 0;
 	}
 
-	// I used the modulo operator in case the gohst goes outside the grid.
 	if (2 == frightened_mode && 0 == position.x % GHOST_ESCAPE_SPEED && 0 == position.y % GHOST_ESCAPE_SPEED)
 	{
 		speed = GHOST_ESCAPE_SPEED;
@@ -217,7 +170,6 @@ void Ghost::update(unsigned char i_level, std::array<std::array<Cell, MAP_HEIGHT
 
 	update_target(i_pacman.get_direction(), i_ghost_0.get_position(), i_pacman.get_position());
 
-	// This is so clean! I could spend hours staring at it.
 	walls[0] = map_collision(0, use_door, speed + position.x, position.y, i_map);
 	walls[1] = map_collision(0, use_door, position.x, position.y - speed, i_map);
 	walls[2] = map_collision(0, use_door, position.x - speed, position.y, i_map);
