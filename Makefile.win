@@ -4,14 +4,14 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = main.o ../Pacman-Main/Pacman-Main/Source/ConvertSketch.o ../Pacman-Main/Pacman-Main/Source/DrawMap.o ../Pacman-Main/Pacman-Main/Source/DrawText.o ../Pacman-Main/Pacman-Main/Source/Ghost.o ../Pacman-Main/Pacman-Main/Source/GhostManager.o ../Pacman-Main/Pacman-Main/Source/MapCollision.o ../Pacman-Main/Pacman-Main/Source/Pacman.o
-LINKOBJ  = main.o ../Pacman-Main/Pacman-Main/Source/ConvertSketch.o ../Pacman-Main/Pacman-Main/Source/DrawMap.o ../Pacman-Main/Pacman-Main/Source/DrawText.o ../Pacman-Main/Pacman-Main/Source/Ghost.o ../Pacman-Main/Pacman-Main/Source/GhostManager.o ../Pacman-Main/Pacman-Main/Source/MapCollision.o ../Pacman-Main/Pacman-Main/Source/Pacman.o
-LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -L"C:/Users/karin/Desktop/archivosSDL/SDL2-devel-2.30.3-mingw/SDL2-2.30.3/x86_64-w64-mingw32/lib" -L"C:/Users/karin/Desktop/archivosSDL/SDL2_mixer-devel-2.8.0-mingw/SDL2_mixer-2.8.0/x86_64-w64-mingw32/lib" -L"C:/Users/karin/Desktop/archivosSDL/SFML-2.4.2-windows-gcc-4.9.2-tdm-64-bit/SFML-2.4.2/lib" -static-libgcc -L"C:/Users/karin/Desktop/archivosSDL/SFML-2.4.2-windows-gcc-4.9.2-tdm-64-bit/SFML-2.4.2/lib" -mwindows -lsfml-audio -lsfml-graphics -lsfml-system -lsfml-window
-INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Users/karin/Desktop/archivosSDL/SFML-2.4.2-windows-gcc-4.9.2-tdm-64-bit/SFML-2.4.2/include"
-CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++" -I"C:/Users/karin/Desktop/archivosSDL/SDL2_mixer-devel-2.8.0-mingw/SDL2_mixer-2.8.0/x86_64-w64-mingw32/include/SDL2" -I"C:/Users/karin/Desktop/archivosSDL/SDL2-devel-2.30.3-mingw/SDL2-2.30.3/x86_64-w64-mingw32/include/SDL2" -I"C:/Users/karin/Desktop/archivosSDL/SFML-2.4.2-windows-gcc-4.9.2-tdm-64-bit/SFML-2.4.2/include"
+OBJ      = main.o ConvertSketch.o DrawMap.o DrawText.o Ghost.o GhostManager.o MapCollision.o Pacman.o
+LINKOBJ  = main.o ConvertSketch.o DrawMap.o DrawText.o Ghost.o GhostManager.o MapCollision.o Pacman.o
+LIBS     = -L"C:/Users/israe/Desktop/Dev-Cpp/MinGW64/lib" -L"C:/Users/israe/Desktop/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -L"C:/Users/karin/Desktop/archivosSDL/SFML-2.4.2-windows-gcc-4.9.2-tdm-64-bit/SFML-2.4.2/lib" -L"C:/SFML-2.4.2/lib" -mwindows -lsfml-audio -lsfml-graphics -lsfml-system -lsfml-window
+INCS     = -I"C:/Users/israe/Desktop/Dev-Cpp/MinGW64/include" -I"C:/Users/israe/Desktop/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Users/israe/Desktop/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/SFML-2.4.2/include"
+CXXINCS  = -I"C:/Users/israe/Desktop/Dev-Cpp/MinGW64/include" -I"C:/Users/israe/Desktop/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Users/israe/Desktop/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Users/israe/Desktop/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++" -I"C:/SFML-2.4.2/include"
 BIN      = Videojuego-Pacman.exe
-CXXFLAGS = $(CXXINCS) -std=c++11                                                                                                                      -std=gnu++11
-CFLAGS   = $(INCS) -std=c++11                                                                                                                      -std=gnu++11
+CXXFLAGS = $(CXXINCS) -std=c++11
+CFLAGS   = $(INCS) -std=c++11
 RM       = rm.exe -f
 
 .PHONY: all all-before all-after clean clean-custom
@@ -27,23 +27,23 @@ $(BIN): $(OBJ)
 main.o: main.cpp
 	$(CPP) -c main.cpp -o main.o $(CXXFLAGS)
 
-../Pacman-Main/Pacman-Main/Source/ConvertSketch.o: ../Pacman-Main/Pacman-Main/Source/ConvertSketch.cpp
-	$(CPP) -c ../Pacman-Main/Pacman-Main/Source/ConvertSketch.cpp -o ../Pacman-Main/Pacman-Main/Source/ConvertSketch.o $(CXXFLAGS)
+ConvertSketch.o: ConvertSketch.cpp
+	$(CPP) -c ConvertSketch.cpp -o ConvertSketch.o $(CXXFLAGS)
 
-../Pacman-Main/Pacman-Main/Source/DrawMap.o: ../Pacman-Main/Pacman-Main/Source/DrawMap.cpp
-	$(CPP) -c ../Pacman-Main/Pacman-Main/Source/DrawMap.cpp -o ../Pacman-Main/Pacman-Main/Source/DrawMap.o $(CXXFLAGS)
+DrawMap.o: DrawMap.cpp
+	$(CPP) -c DrawMap.cpp -o DrawMap.o $(CXXFLAGS)
 
-../Pacman-Main/Pacman-Main/Source/DrawText.o: ../Pacman-Main/Pacman-Main/Source/DrawText.cpp
-	$(CPP) -c ../Pacman-Main/Pacman-Main/Source/DrawText.cpp -o ../Pacman-Main/Pacman-Main/Source/DrawText.o $(CXXFLAGS)
+DrawText.o: DrawText.cpp
+	$(CPP) -c DrawText.cpp -o DrawText.o $(CXXFLAGS)
 
-../Pacman-Main/Pacman-Main/Source/Ghost.o: ../Pacman-Main/Pacman-Main/Source/Ghost.cpp
-	$(CPP) -c ../Pacman-Main/Pacman-Main/Source/Ghost.cpp -o ../Pacman-Main/Pacman-Main/Source/Ghost.o $(CXXFLAGS)
+Ghost.o: Ghost.cpp
+	$(CPP) -c Ghost.cpp -o Ghost.o $(CXXFLAGS)
 
-../Pacman-Main/Pacman-Main/Source/GhostManager.o: ../Pacman-Main/Pacman-Main/Source/GhostManager.cpp
-	$(CPP) -c ../Pacman-Main/Pacman-Main/Source/GhostManager.cpp -o ../Pacman-Main/Pacman-Main/Source/GhostManager.o $(CXXFLAGS)
+GhostManager.o: GhostManager.cpp
+	$(CPP) -c GhostManager.cpp -o GhostManager.o $(CXXFLAGS)
 
-../Pacman-Main/Pacman-Main/Source/MapCollision.o: ../Pacman-Main/Pacman-Main/Source/MapCollision.cpp
-	$(CPP) -c ../Pacman-Main/Pacman-Main/Source/MapCollision.cpp -o ../Pacman-Main/Pacman-Main/Source/MapCollision.o $(CXXFLAGS)
+MapCollision.o: MapCollision.cpp
+	$(CPP) -c MapCollision.cpp -o MapCollision.o $(CXXFLAGS)
 
-../Pacman-Main/Pacman-Main/Source/Pacman.o: ../Pacman-Main/Pacman-Main/Source/Pacman.cpp
-	$(CPP) -c ../Pacman-Main/Pacman-Main/Source/Pacman.cpp -o ../Pacman-Main/Pacman-Main/Source/Pacman.o $(CXXFLAGS)
+Pacman.o: Pacman.cpp
+	$(CPP) -c Pacman.cpp -o Pacman.o $(CXXFLAGS)
